@@ -2,11 +2,18 @@ package com.tranzmate.exercise;
 
 import java.util.Properties;
 
-public class BoringRectangle implements IRectangle {
+public final class BoringRectangle implements IRectangle {
 	public int left;
 	public int top;
 	public int right;
 	public int bottom;
+	
+	public BoringRectangle (int left, int top, int right, int bottom) {
+		this.bottom = bottom;
+		this.left = left;
+		this.right = right;
+		this.top = top;
+	}
 	
 	@Override
 	public int getLeft() {
