@@ -7,10 +7,10 @@ public class RectangleStoreMoovit implements IRectanglesStore {
 	@Override
 	public void initialize(IRectangle bounds, Collection<IRectangle> rectangles) {
 		ArrayList<IRectangle> rectanglesByPositions = new ArrayList<IRectangle>(rectangles);
-		rectanglesByPositions.forEach(rec -> System.out.println(rec.getTop()));
+		rectanglesByPositions.forEach(rec -> System.out.println(rec.getProperties()));
 
 		rectanglesByPositions.sort((IRectangle rec1, IRectangle rec2) -> rec1.getTop() - rec2.getTop());
-		rectanglesByPositions.forEach(rec -> System.out.println(rec.getTop()));
+		rectanglesByPositions.forEach(rec -> System.out.println(rec.getProperties()));
 	}
 	
 	/**
