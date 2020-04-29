@@ -17,20 +17,34 @@ import java.util.Collection;
 
 /*
  * TODO:
- * Create function to check if rectangle is proper
- * Demand final rectangles
- * Throw exception if boundaries are improper
+ * Demand rectangles to be immutable/final
+ * Throw exception if boundaries are improper on initialization
  * Insert sort to rectangles
  */
 public class RectangleStoreMoovit implements IRectanglesStore {
-	private IRectangle bounds;
-	private ArrayList<IRectangle> rectangles;
-	private ArrayList<IRectangle> defectiveRectangles;
+	// TODO: change to private
+	public IRectangle bounds;
+	public ArrayList<IRectangle> rectangles; 
+	public ArrayList<IRectangle> defectiveRectangles;
 	
 	private boolean isRectangleProper(IRectangle rectangle) {
-		 return (rectangle.getLeft() < rectangle.getRight() && rectangle.getBottom() < rectangle.getTop());
+		 return (rectangle.getLeft() < rectangle.getRight() 
+				 && rectangle.getBottom() < rectangle.getTop());
 	}
 	
+	private boolean isRectangleWithin(IRectangle rec, IRectangle bounds) {
+		return rec.getTop() < bounds.getTop()
+				&& rec.getBottom() > bounds.getBottom()
+				&& rec.getLeft() > bounds.getLeft()
+				&& rec.getRight() < bounds.getRight();
+	}
+	
+	private boolean isPointWithin(int x, int y, IRectangle bounds) {
+		return y < bounds.getTop()
+				&& y > bounds.getBottom()
+				&& x > bounds.getLeft()
+				&& x < bounds.getRight();
+	}
 	
 	@Override
 	public void initialize(IRectangle bounds, Collection<IRectangle> rectangles) {
@@ -39,25 +53,27 @@ public class RectangleStoreMoovit implements IRectanglesStore {
 		else
 			return; /* TODO: throw exception */
 		
-		this.rectangles = new ArrayList<IRectangle>(rectangles);
-		this.defectiveRectangles = new ArrayList<IRectangle>(rectangles);
+		this.rectangles = new ArrayList<IRectangle>();
+		this.defectiveRectangles = new ArrayList<IRectangle>();
 		
-		rectangles.forEach(rec -> {
-			if(isRectangleProper(rec))
-				this.rectangles.add(rec); /* TODO: maybe use sort insertion */
+		/*rectangles.forEach(rec -> {
+			if(isRectangleProper(rec) && isRectangleWithin(this.bounds, rec))
+				this.rectangles.add(rec); // TODO: maybe use sort insertion 
 			else
 				this.defectiveRectangles.add(rec);
-		});
+		});*/
+		
+		for(IRectangle rec : rectangles){
+			if(isRectangleProper(rec) && isRectangleWithin(rec, this.bounds))
+				this.rectangles.add(rec); // TODO: maybe use sort insertion 
+			else
+				this.defectiveRectangles.add(rec);
+		}
 
 		this.rectangles.sort((IRectangle rec1, IRectangle rec2) -> rec2.getTop() - rec1.getTop());
 	}
 	
-	/**
-	 * 
-	 * return the topmost rectangle per specified x, y location 
-	 * (or null in case no rectangle exists in the specified location) 
-	 * 
-	 */
+	
 	/*
     TODO:
     use interface classes
@@ -78,9 +94,32 @@ public class RectangleStoreMoovit implements IRectanglesStore {
     5. return null
      */
 
+	/**
+	 * 
+	 * Returns the topmost rectangle per specified x, y location 
+	 * (or null in case no rectangle exists in the specified location) 
+	 * int x: sideways coordinate
+	 * int y: height coordinate
+	 * 
+	 */
 	@Override
 	public IRectangle findRectangleAt(int x, int y) {
-		// TODO Auto-generated method stub
+		if(!isPointWithin(x, y, this.bounds))
+			return null;
+
+		/*
+		 * TODO: maybe change to foreach
+		 */
+		for(IRectangle rec : this.rectangles) {
+			// Reached rectangles too low
+			if(y > rec.getTop())
+				return null;
+			
+			if(isPointWithin(x, y, rec))
+				return rec;
+		}
+		
+		// No matching rectangles
 		return null;
 	}
 
