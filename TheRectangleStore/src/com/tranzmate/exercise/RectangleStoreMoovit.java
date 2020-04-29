@@ -4,34 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class RectangleStoreMoovit implements IRectanglesStore {
-	/**
-	 * 
-	 * The inner class stores a rectangle with any of his sides, 
-	 * for sorting purposes
-	 *
-	 */
-	private class RectanglePosition {
-		private int position;
-		private IRectangle rectangle; 
-		
-		public RectanglePosition(int position, IRectangle rectangle) {
-			this.position = position;
-			this.rectangle = rectangle;
-		}
-		
-		public int getPosition() {
-			return this.position;
-		}
-		
-		public IRectangle getRectangle() {
-			return this.rectangle;
-		}
-	}
-	
 	@Override
 	public void initialize(IRectangle bounds, Collection<IRectangle> rectangles) {
-		ArrayList<IRectangle> rectanglesByTop = new ArrayList<>(); 
-		ArrayList<IRectangle> rectanglesByLeft = new ArrayList<>();
+		ArrayList<IRectangle> rectanglesByPositions = new ArrayList<IRectangle>(rectangles);
+		rectanglesByPositions.forEach(rec -> System.out.println(rec.getTop()));
+
+		rectanglesByPositions.sort((IRectangle rec1, IRectangle rec2) -> rec1.getTop() - rec2.getTop());
+		rectanglesByPositions.forEach(rec -> System.out.println(rec.getTop()));
 	}
 	
 	/**
