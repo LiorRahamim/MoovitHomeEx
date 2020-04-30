@@ -11,7 +11,7 @@ public class Test {
 		RectangleStoreMoovit store;
 		BoringRectangle bounds;
 		
-		for(int i = 0; i < 100; i++) {
+		for(int i = 0; i < 10; i++) {
 			rectangles.push(new BoringRectangle(rand.nextInt(100), rand.nextInt(100), rand.nextInt(100), rand.nextInt(100)));
 		}
 
@@ -21,7 +21,7 @@ public class Test {
 		store.initialize(bounds, rectangles);
 				
 		System.out.println("Bounds: ltrb " + bounds.toString());
-		//rectangles.forEach(rec -> System.out.println(rec.toString()));
+		rectangles.forEach(rec -> System.out.println(rec.toString()));
 		System.out.println();
 		store.rectangles.forEach(rec -> System.out.println(rec.toString()));
 		

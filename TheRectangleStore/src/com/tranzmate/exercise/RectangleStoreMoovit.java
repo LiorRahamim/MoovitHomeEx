@@ -46,6 +46,9 @@ public class RectangleStoreMoovit implements IRectanglesStore {
 				&& x < bounds.getRight();
 	}
 	
+	/**
+	 * Initializing the store with boundaries and rectangles collection
+	 */
 	@Override
 	public void initialize(IRectangle bounds, Collection<IRectangle> rectangles) {
 		if(isRectangleProper(bounds))
@@ -56,43 +59,15 @@ public class RectangleStoreMoovit implements IRectanglesStore {
 		this.rectangles = new ArrayList<IRectangle>();
 		this.defectiveRectangles = new ArrayList<IRectangle>();
 		
-		/*rectangles.forEach(rec -> {
-			if(isRectangleProper(rec) && isRectangleWithin(this.bounds, rec))
-				this.rectangles.add(rec); // TODO: maybe use sort insertion 
-			else
-				this.defectiveRectangles.add(rec);
-		});*/
-		
-		for(IRectangle rec : rectangles){
+		rectangles.forEach(rec -> {
 			if(isRectangleProper(rec) && isRectangleWithin(rec, this.bounds))
 				this.rectangles.add(rec); // TODO: maybe use sort insertion 
 			else
 				this.defectiveRectangles.add(rec);
-		}
-
+		});
+					
 		this.rectangles.sort((IRectangle rec1, IRectangle rec2) -> rec2.getTop() - rec1.getTop());
 	}
-	
-	
-	/*
-    TODO:
-    use interface classes
-    check that left<=right & top<=bottom
-    check that points are inside main rectangle bounds
-
-    Store rectangles:
-    1. save rectangle points as tuple (left, top, right, bottom) into array
-    2. insertion sort for every new rectangle
-
-    Search topmost rectangle with (x,y) point
-    3. Search from top rectangle to bottom rectangle
-    4. while top>y
-        Is bottom<=y?
-            Is left<=x?
-                Is right>=x?
-                    return rectangle
-    5. return null
-     */
 
 	/**
 	 * 
@@ -122,5 +97,4 @@ public class RectangleStoreMoovit implements IRectanglesStore {
 		// No matching rectangles
 		return null;
 	}
-
 }
