@@ -1,17 +1,13 @@
-package com.tranzmate.exercise;
+package com.tranzmate.exercise.Tests;
 import com.tranzmate.exercise.BoringRectangle;
+import com.tranzmate.exercise.IRectangle;
 import com.tranzmate.exercise.RectangleStoreMoovit;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class Tests {
-//    String[] urls;
-//    String path; // path to url text file
-//    String first_url;
-//    String bad_url;
-//
+public class TestIRectangle {
     BoringRectangle r1;
     BoringRectangle r2;
     BoringRectangle r3;
@@ -33,26 +29,26 @@ public class Tests {
 
     @Test
     public void testIsBetween(){
-        assertTrue(RectangleStoreMoovit.isBetween(1,3,2));
-        assertFalse(RectangleStoreMoovit.isBetween(1,2,3));
+        assertTrue(IRectangle.isBetween(1,3,2));
+        assertFalse(IRectangle.isBetween(1,2,3));
     }
 
     @Test
     public void testIsPointWithin(){
-        assertTrue(RectangleStoreMoovit.isPointWithin(7, 20, r3));
-        assertFalse(RectangleStoreMoovit.isPointWithin(2,2, r3));
+        assertTrue(r3.isPointWithin(7, 20));
+        assertFalse(r3.isPointWithin(2,2));
     }
 
     @Test
     public void testIsRectangleWithin(){
-        assertTrue(RectangleStoreMoovit.isRectangleWithin(r1, r3));
-        assertFalse(RectangleStoreMoovit.isRectangleWithin(r1, r2));
+        assertTrue(r1.isRectangleWithin(r3));
+        assertFalse(r1.isRectangleWithin(r2));
     }
 
     @Test
     public void testIsRectangleProper(){
-        assertTrue(RectangleStoreMoovit.isRectangleProper(r1));
-        assertTrue(RectangleStoreMoovit.isRectangleProper(r3));
-        assertFalse(RectangleStoreMoovit.isRectangleProper(r4));
+        assertTrue(r1.isRectangleProper());
+        assertTrue(r3.isRectangleProper());
+        assertFalse(r4.isRectangleProper());
     }
 }

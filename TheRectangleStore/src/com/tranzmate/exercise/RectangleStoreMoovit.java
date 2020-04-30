@@ -14,55 +14,28 @@ import java.util.Collection;
  * Right should be bigger than left 
  */
 
-
-/*
- * TODO:
- * Demand rectangles to be immutable/final
- * Throw exception if boundaries are improper on initialization
- * Insert sort to rectangles
- */
 public class RectangleStoreMoovit implements IRectanglesStore {
-	// TODO: change to private
-	public IRectangle bounds;
-	public ArrayList<IRectangle> rectangles; 
-	public ArrayList<IRectangle> defectiveRectangles;
-
-	public static boolean isRectangleProper(IRectangle rectangle) {
-		 return (rectangle.getLeft() < rectangle.getRight()
-				 && rectangle.getBottom() < rectangle.getTop());
-	}
-	
-	public static boolean isRectangleWithin(IRectangle rec, IRectangle bounds) {
-		return isPointWithin(rec.getLeft(), rec.getBottom(), bounds)
-				&& isPointWithin(rec.getRight(), rec.getTop(), bounds);
-	}
-	
-	public static boolean isPointWithin(int x, int y, IRectangle bounds) {
-		return isBetween(bounds.getBottom(),bounds.getTop(), y)
-				&& isBetween(bounds.getLeft(),bounds.getRight(), x);
-	}
-
-	public static boolean isBetween(int low, int high, int middle){
-		return low<middle && middle<high;
-	}
-
+	private IRectangle bounds;
+	private ArrayList<IRectangle> rectangles; 
+	private ArrayList<IRectangle> defectiveRectangles;
 
 	/**
 	 * Initializing the store with boundaries and rectangles collection
+	 * This method expects its arguments to be immutable
 	 */
 	@Override
 	public void initialize(IRectangle bounds, Collection<IRectangle> rectangles) {
-		if(isRectangleProper(bounds))
+		if(bounds.isRectangleProper())
 			this.bounds = bounds;
-		else
-			return; /* TODO: throw exception */
-		
+		else 
+			throw new RuntimeException("Bounds rectangle is not proper");
+				
 		this.rectangles = new ArrayList<IRectangle>();
 		this.defectiveRectangles = new ArrayList<IRectangle>();
 		
 		rectangles.forEach(rec -> {
-			if(isRectangleProper(rec) && isRectangleWithin(rec, this.bounds))
-				this.rectangles.add(rec); // TODO: maybe use sort insertion 
+			if(rec.isRectangleProper() && rec.isRectangleWithin(this.bounds))
+				this.rectangles.add(rec); 
 			else
 				this.defectiveRectangles.add(rec);
 		});
@@ -80,18 +53,15 @@ public class RectangleStoreMoovit implements IRectanglesStore {
 	 */
 	@Override
 	public IRectangle findRectangleAt(int x, int y) {
-		if(!isPointWithin(x, y, this.bounds))
+		if(!this.bounds.isPointWithin(x, y))
 			return null;
 
-		/*
-		 * TODO: maybe change to foreach
-		 */
 		for(IRectangle rec : this.rectangles) {
 			// Reached rectangles too low
 			if(y > rec.getTop())
 				return null;
 			
-			if(isPointWithin(x, y, rec))
+			if(rec.isPointWithin(x, y))
 				return rec;
 		}
 		
