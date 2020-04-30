@@ -26,26 +26,27 @@ public class RectangleStoreMoovit implements IRectanglesStore {
 	public IRectangle bounds;
 	public ArrayList<IRectangle> rectangles; 
 	public ArrayList<IRectangle> defectiveRectangles;
-	
-	private boolean isRectangleProper(IRectangle rectangle) {
-		 return (rectangle.getLeft() < rectangle.getRight() 
+
+	public static boolean isRectangleProper(IRectangle rectangle) {
+		 return (rectangle.getLeft() < rectangle.getRight()
 				 && rectangle.getBottom() < rectangle.getTop());
 	}
 	
-	private boolean isRectangleWithin(IRectangle rec, IRectangle bounds) {
-		return rec.getTop() < bounds.getTop()
-				&& rec.getBottom() > bounds.getBottom()
-				&& rec.getLeft() > bounds.getLeft()
-				&& rec.getRight() < bounds.getRight();
+	public static boolean isRectangleWithin(IRectangle rec, IRectangle bounds) {
+		return isPointWithin(rec.getLeft(), rec.getBottom(), bounds)
+				&& isPointWithin(rec.getRight(), rec.getTop(), bounds);
 	}
 	
-	private boolean isPointWithin(int x, int y, IRectangle bounds) {
-		return y < bounds.getTop()
-				&& y > bounds.getBottom()
-				&& x > bounds.getLeft()
-				&& x < bounds.getRight();
+	public static boolean isPointWithin(int x, int y, IRectangle bounds) {
+		return isBetween(bounds.getBottom(),bounds.getTop(), y)
+				&& isBetween(bounds.getLeft(),bounds.getRight(), x);
 	}
-	
+
+	public static boolean isBetween(int low, int high, int middle){
+		return low<middle && middle<high;
+	}
+
+
 	/**
 	 * Initializing the store with boundaries and rectangles collection
 	 */
